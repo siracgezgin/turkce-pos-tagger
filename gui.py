@@ -1066,7 +1066,6 @@ class AdvancedPOSTaggerGUI:
 • Detaylı istatistikler
 • Çoklu format desteği
 
-Geliştirici: AI Assistant
 Teknoloji: Python, Tkinter, scikit-learn
 Lisans: MIT License
 """

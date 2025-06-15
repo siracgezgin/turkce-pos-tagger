@@ -1,4 +1,4 @@
-# 🚀 Türkçe için İleri Düzey Çok Katmanlı Hibrit Part-of-Speech (POS) Tagging Sistemi
+# Türkçe için İleri Düzey Çok Katmanlı Hibrit Part-of-Speech (POS) Tagging Sistemi
 
 <div align="center">
 
@@ -25,29 +25,29 @@
 
 ---
 
-## 📋 İçindekiler
+## İçindekiler
 
-- [🎯 Projeye Genel Bakış](#-projeye-genel-bakış)
-- [🔬 Araştırma Motivasyonu ve Bilimsel Katkılar](#-araştırma-motivasyonu-ve-bilimsel-katkılar)
-- [🏗️ Sistem Mimarisi ve Teknik Detaylar](#️-sistem-mimarisi-ve-teknik-detaylar)
-- [💡 İnovatif Yaklaşımlar ve Algoritmalar](#-inovatif-yaklaşımlar-ve-algoritmalar)
-- [🚀 Kurulum ve Deployment](#-kurulum-ve-deployment)
-- [📊 Performans Analizi ve Karşılaştırmalar](#-performans-analizi-ve-karşılaştırmalar)
-- [🔧 API Referansı ve Kullanım Örnekleri](#-api-referansı-ve-kullanım-örnekleri)
-- [🧪 Deneysel Sonuçlar ve Ablasyon Çalışmaları](#-deneysel-sonuçlar-ve-ablasyon-çalışmaları)
-- [🤝 Katkıda Bulunma ve Geliştirme](#-katkıda-bulunma-ve-geliştirme)
-- [📚 Akademik Referanslar ve Atıflar](#-akademik-referanslar-ve-atıflar)
-- [📄 Lisans ve İletişim](#-lisans-ve-iletişim)
+- [Projeye Genel Bakış](#-projeye-genel-bakış)
+- [Araştırma Motivasyonu ve Bilimsel Katkılar](#-araştırma-motivasyonu-ve-bilimsel-katkılar)
+- [Sistem Mimarisi ve Teknik Detaylar](#️-sistem-mimarisi-ve-teknik-detaylar)
+- [İnovatif Yaklaşımlar ve Algoritmalar](#-inovatif-yaklaşımlar-ve-algoritmalar)
+- [Kurulum ve Deployment](#-kurulum-ve-deployment)
+- [Performans Analizi ve Karşılaştırmalar](#-performans-analizi-ve-karşılaştırmalar)
+- [API Referansı ve Kullanım Örnekleri](#-api-referansı-ve-kullanım-örnekleri)
+- [Deneysel Sonuçlar ve Ablasyon Çalışmaları](#-deneysel-sonuçlar-ve-ablasyon-çalışmaları)
+- [Katkıda Bulunma ve Geliştirme](#-katkıda-bulunma-ve-geliştirme)
+- [Akademik Referanslar ve Atıflar](#-akademik-referanslar-ve-atıflar)
+- [Lisans ve İletişim](#-lisans-ve-iletişim)
 
 ---
 
-## 🎯 Projeye Genel Bakış
+## Projeye Genel Bakış
 
 ### Proje Tanımı
 
 Bu çalışma, **Türkçe'nin morfolojik zenginliği ve sözdizimsel karmaşıklığından** kaynaklanan Part-of-Speech (POS) tagging zorluklarını ele alan, **akademik araştırma standardında** geliştirilmiş bir hibrit sistemdir. Proje, geleneksel istatistiksel yöntemler ile modern makine öğrenmesi tekniklerini birleştirerek, **Türkçe doğal dil işleme** alanında özgün bir katkı sunmaktadır.
 
-### 🎯 Temel Hedefler
+### Temel Hedefler
 
 - **Yüksek Doğruluk**: Türkçe metinlerde %96+ POS tagging doğruluğu
 - **Hesaplamalı Verimlilik**: Transformer modellere göre 10x daha hızlı işlem
@@ -55,7 +55,7 @@ Bu çalışma, **Türkçe'nin morfolojik zenginliği ve sözdizimsel karmaşıkl
 - **Genelleştirme Yeteneği**: Farklı metin türlerinde tutarlı performans
 - **Açık Kaynak Katkısı**: Türkçe NLP toplulugu için erişilebilir araçlar
 
-### 🔍 Problem Tanımı ve Çözüm Yaklaşımı
+### Problem Tanımı ve Çözüm Yaklaşımı
 
 **Türkçe POS Tagging'in Temel Zorlukları:**
 
@@ -99,9 +99,9 @@ graph TD
 
 ---
 
-## 🔬 Araştırma Motivasyonu ve Bilimsel Katkılar
+## Araştırma Motivasyonu ve Bilimsel Katkılar
 
-### 📈 Literatür Analizi ve Mevcut Durum
+### Literatür Analizi ve Mevcut Durum
 
 Türkçe POS tagging alanında yapılan çalışmalar kronolojik olarak şu şekilde gelişim göstermiştir:
 
@@ -175,9 +175,9 @@ Türkçe'nin morfolojik özelliklerini kullanan veri artırma teknikleri:
 
 ---
 
-## 🏗️ Sistem Mimarisi ve Teknik Detaylar
+## Sistem Mimarisi ve Teknik Detaylar
 
-### 🔧 Modüler Tasarım Felsefesi
+### Modüler Tasarım Felsefesi
 
 Sistemimiz, **SOLID prensiplerine** uygun, gevşek bağlı (loosely coupled) ve yüksek uyum (high cohesion) özelliklerine sahip modüler bir tasarımla geliştirilmiştir.
 
@@ -281,7 +281,7 @@ turkce-pos-tagger/
 └── ⚙️ pyproject.toml               # Modern Python packaging
 ```
 
-### 🏛️ Katmanlı Mimari Detayları
+### Katmanlı Mimari Detayları
 
 **1. Veri Erişim Katmanı (Data Access Layer)**
 
@@ -371,9 +371,9 @@ class POSTaggingAPI:
 
 ---
 
-## 💡 İnovatif Yaklaşımlar ve Algoritmalar
+## İnovatif Yaklaşımlar ve Algoritmalar
 
-### 🧠 Hibrit Ensemble Modeli
+### Hibrit Ensemble Modeli
 
 Sistemimizin kalbi olan hibrit model, farklı yaklaşımların güçlü yanlarını birleştiren **ensemble architecture** kullanmaktadır:
 
@@ -426,7 +426,7 @@ class HybridEnsembleModel:
         )
 ```
 
-### 🔍 Gelişmiş Özellik Mühendisliği
+### Gelişmiş Özellik Mühendisliği
 
 **Morfolojik Özellik Çıkarıcı:**
 
@@ -509,7 +509,7 @@ class ContextualFeatureExtractor:
         return features
 ```
 
-### 🎯 Uyarlanabilir Öğrenme Stratejileri
+### Uyarlanabilir Öğrenme Stratejileri
 
 **Aktif Öğrenme ile Model İyileştirme:**
 

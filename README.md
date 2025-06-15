@@ -182,49 +182,133 @@ Sistemimiz, **SOLID prensiplerine** uygun, gevşek bağlı (loosely coupled) ve 
 Projenin mevcut dosya ve klasör yapısı aşağıdaki gibidir:
 
 ```
-turkce-pos-tagger/
+turkish_pos_project/
 │
-├── kod/                  # Ana Python kaynak kodları
-│   ├── augmentation/       # Veri artırma modülleri
-│   │   ├── __init__.py
-│   │   └── augmenter.py
-│   │
-│   ├── config/             # Yapılandırma yönetimi
-│   │   ├── __init__.py
-│   │   └── settings.py
-│   │
-│   ├── core/               # Çekirdek sistem bileşenleri
-│   │   ├── __init__.py
+├── .gitignore              # Git tarafından takip edilmeyecek dosyaları listeler
+├── README.md               # Bu dosya
+├── requirements.txt        # Gerekli Python kütüphaneleri
+├── veri_donusturucu.py     # Ham .conllu verisini proje formatına çevirir
+├── gui.py                  # Tkinter tabanlı grafiksel kullanıcı arayüzü
+│
+├── code/                   # Projenin ana mantığını içeren Python paketi
+│   ├── __init__.py
+│   ├── main.py             # CLI arayüzünü yönetir (--train, --eval, --tag)
+│   ├── config/             # Yapılandırma klasörü
+│   │   └── settings.py     # Veri yolları gibi sabit ayarlar
+│   ├── core/               # Çekirdek işlevler
+│   │   ├── preprocessing.py
 │   │   ├── feature_extraction.py
 │   │   ├── models.py
-│   │   ├── preprocessing.py
 │   │   └── tagger_system.py
-│   │
-│   ├── evaluation/         # Değerlendirme ve metrikler
-│   │   ├── __init__.py
-│   │   ├── framework.py
-│   │   └── monitor.py
-│   │
-│   ├── postprocessing/      # Model sonrası kural tabanlı düzeltmeler
-│   │   ├── __init__.py
-│   │   └── consistency.py
-│   │
-│   ├── utils/               # Yardımcı araçlar (genel fonksiyonlar)
-│   │   └── __init__.py
-│   │
-│   ├── __init__.py
-│   └── main.py              # Sistemin ana giriş noktası
+│   └── evaluation/         # Model değerlendirme kodları
+│       └── framework.py
 │
-├── data/                  # Veri setleri (eğitim, doğrulama, test)
-│   ├── test/
-│   ├── train/
-│   └── validation/
-│
-├── notebooks/              # Araştırma ve analiz notebook'ları
-│   └── experimental_analysis.ipynb
-│
-├── README.md               # Proje dokümantasyonu (bu dosya)
-└── requirements.txt         # Proje bağımlılıkları
+└── data/                   # İşlenmiş ve kullanıma hazır veriler
+    ├── train/
+    │   └── corpus.txt
+    └── test/
+        └── corpus.txt
+```
+
+> **Not:** `model.joblib`, `model_score.json`, `*.conllu` gibi büyük veya üretilmiş dosyalar `.gitignore` ile Git takibinden çıkarılmıştır.
+
+## Kurulum ve Çalıştırma Akışı
+
+Sistemi kullanmak için aşağıdaki adımları sırasıyla takip edin.
+
+### 1. Adım: Kurulum
+
+**Projeyi Klonlayın:**
+```bash
+git clone https://github.com/siracgezgin/turkce-pos-tagger.git
+cd turkish_pos_project
+```
+
+**Sanal Ortam Oluşturun (Önerilir):**
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
+
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+**Bağımlılıkları Yükleyin:**
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Adım: Veri Hazırlama
+
+**Veriyi İndirin:** Modelin eğitimi için Universal Dependencies sitesinden IMST Türkçe veri setini indirin. `tr_imst-ud-train.conllu` ve `tr_imst-ud-test.conllu` dosyalarını projenin ana dizinine kopyalayın.
+
+**Veriyi Dönüştürün:** İndirdiğiniz `.conllu` dosyalarını projenin kullanacağı formata çevirmek için aşağıdaki script'i çalıştırın:
+
+```bash
+python veri_donusturucu.py
+```
+
+Bu komut, işlenmiş verileri `data/train/corpus.txt` ve `data/test/corpus.txt` dosyalarına yazacaktır.
+
+### 3. Adım: Model Eğitimi ve Değerlendirme
+
+**Modeli Eğitin:** Aşağıdaki komut ile `data/train` klasöründeki veriyi kullanarak modeli eğitin.
+
+```bash
+python code/main.py --train
+```
+
+İşlem tamamlandığında, projenin ana dizininde `model.joblib` adında eğitilmiş bir model dosyası oluşacaktır.
+
+**Modeli Değerlendirin:** Eğittiğiniz modelin performansını `data/test` klasöründeki veri ile ölçmek için aşağıdaki komutu çalıştırın.
+
+```bash
+python code/main.py --eval
+```
+
+İşlem tamamlandığında, projenin ana dizininde `model_score.json` adında, doğruluk ve F1-skoru gibi metrikleri içeren bir dosya oluşacaktır.
+
+### 4. Adım: Etiketleyiciyi Kullanma
+
+Modelinizi eğittikten sonra, metinleri etiketlemek için iki seçeneğiniz vardır:
+
+#### A. Komut Satırı Arayüzü (CLI)
+
+Tek bir cümleyi hızlıca etiketlemek için `--tag` argümanını kullanın:
+
+```bash
+python code/main.py --tag "Bursa Teknik Üniversitesi önemli bir kurumdur."
+```
+
+**Örnek Çıktı:**
+```python
+[('Bursa', 'PROPN'), ('Teknik', 'PROPN'), ('Üniversitesi', 'PROPN'), (',', 'PUNCT'), ('önemli', 'ADJ'), ('bir', 'DET'), ('kurumdur', 'NOUN'), ('.', 'PUNCT')]
+```
+
+#### B. Grafiksel Kullanıcı Arayüzü (GUI)
+
+Kullanımı daha kolay bir arayüz için `gui.py` script'ini çalıştırın:
+
+```bash
+python gui.py
+```
+
+Açılan penceredeki metin kutusuna etiketlemek istediğiniz cümleyi yazın ve "Etiketle" butonuna tıklayın. Sonuçlar aşağıdaki metin alanında gösterilecektir.
+
+> **Not:** `gui.py` dosyası, Tkinter kütüphanesini kullanır ve temel bir arayüz sunar.
+
+## Katkıda Bulunma
+
+Bu proje akademik bir çalışma olup, topluluk katkılarına açıktır. Katkıda bulunmak isterseniz, lütfen aşağıdaki adımları izleyin:
+
+1. Projeyi fork'layın
+2. Yeni bir özellik dalı oluşturun (`git checkout -b ozellik/yeni-ozellik`)
+3. Değişikliklerinizi commit'leyin
+4. Dalınızı push'layın
+5. Bir Pull Request (Çekme İsteği) açın
+
 ```
 
 ### Katmanlı Mimari Detayları

@@ -17,9 +17,8 @@
 ---
 
 [![Proje Sunumu](https://img.shields.io/badge/📽️_Proje_Sunumu-İzle-red?style=for-the-badge)](https://example.com/presentation)
-[![Akademik Makale](https://img.shields.io/badge/📄_Akademik_Makale-Oku-blue?style=for-the-badge)](https://example.com/paper)
-[![Demo](https://img.shields.io/badge/🎯_Canlı_Demo-Dene-green?style=for-the-badge)](https://example.com/demo)
-[![API Dokümantasyonu](https://img.shields.io/badge/📚_API_Docs-Keşfet-orange?style=for-the-badge)](https://example.com/docs)
+[![Akademik Makale](https://img.shields.io/badge/📄_Akademik_Makale-Oku-blue?style=for-the-badge)](https://aclanthology.org/A94-1018.pdf)
+
 
 </div>
 
@@ -546,4 +545,29 @@ class ActiveLearningFramework:
                 break
     
     def uncertainty_sampling_strategy(self, predictions: List[Prediction]) -> List[int]:
-        """Belirsizlik tabanlı örnekleme stratej
+        """Belirsizlik tabanlı örnekleme stratejisi"""
+        uncertainty_scores = []
+        
+        for pred in predictions:
+            # Entropy tabanlı belirsizlik
+            entropy = self.calculate_entropy(pred.probability_distribution)
+            
+            # Model uyuşmazlığı (ensemble disagreement)
+            disagreement = self.calculate_ensemble_disagreement(pred.individual_predictions)
+            
+            # Bağlamsal belirsizlik
+            contextual_uncertainty = self.calculate_contextual_uncertainty(pred.context)
+            
+            # Kombinasyon belirsizlik skoru
+            total_uncertainty = (
+                0.4 * entropy + 
+                0.4 * disagreement + 
+                0.2 * contextual_uncertainty
+            )
+            
+            uncertainty_scores.append(total_uncertainty)
+        
+        # En yüksek belirsizlik skorlu örnekleri döndür
+        return sorted(range(len(uncertainty_scores)), 
+                     key=lambda i: uncertainty_scores[i], 
+                     reverse=True)

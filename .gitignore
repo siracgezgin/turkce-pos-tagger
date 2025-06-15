@@ -1,0 +1,20 @@
+# Sanal Ortam Klasörü
+venv/
+/venv/
+
+# Python cache dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Model ve skor dosyaları (genellikle büyük olurlar veya her seferinde üretilirler)
+*.joblib
+model_score.json
+
+# İndirilen ham veri dosyaları
+*.conllu
+
+# IDE ve OS'a özel dosyalar
+.vscode/
+.idea/
+.DS_Store

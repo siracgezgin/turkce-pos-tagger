@@ -1,0 +1,8 @@
+Hızlı ADV
+koştu VERB
+. PUNCT
+
+Bu DET
+ev NOUN
+büyük ADJ
+. PUNCT

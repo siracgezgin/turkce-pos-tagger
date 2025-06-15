@@ -1,1 +1,0 @@
-# Bu dosya, 'core' klasörünün bir Python paketi olarak tanınmasını sağlar.

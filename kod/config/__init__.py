@@ -1,1 +1,0 @@
-# Bu dosya, 'config' klasörünün bir Python paketi olarak tanınmasını sağlar.

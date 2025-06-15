@@ -1,1 +1,0 @@
-# Bu dosya, 'evaluation' klasörünün bir Python paketi olarak tanınmasını sağlar.

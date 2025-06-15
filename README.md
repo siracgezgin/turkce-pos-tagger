@@ -860,7 +860,7 @@ Hibrit modelimiz, saf istatistiksel modellere göre belirgin bir doğruluk artı
 
 <div align="center">
 <img src="https://quickchart.io/chart?c=%7B%0A%20%20type%3A%20%27bar%27%2C%0A%20%20data%3A%20%7B%0A%20%20%20%20labels%3A%20%5B%27HMM%20Tagger%27%2C%20%27Hibrit%20Sistemimiz%27%2C%20%27BERT-Turkish%27%5D%2C%0A%20%20%20%20datasets%3A%20%5B%0A%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20label%3A%20%27Do%C4%9Fruluk%20(%25)%27%2C%0A%20%20%20%20%20%20%20%20data%3A%20%5B89.1%2C%2096.7%2C%2097.8%5D%2C%0A%20%20%20%20%20%20%20%20backgroundColor%3A%20%5B%27rgba(255%2C%2099%2C%20132%2C%200.5)%27%2C%20%27rgba(75%2C%20192%2C%20192%2C%200.5)%27%2C%20%27rgba(54%2C%20162%2C%20235%2C%200.5)%27%5D%2C%0A%20%20%20%20%20%20%20%20borderColor%3A%20%5B%27rgb(255%2C%2099%2C%20132)%27%2C%20%27rgb(75%2C%20192%2C%20192)%27%2C%20%27rgb(54%2C%20162%2C%20235)%27%5D%2C%0A%20%20%20%20%20%20%20%20borderWidth%3A%201%2C%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%5D%2C%0A%20%20%7D%2C%0A%20%20options%3A%20%7B%0A%20%20%20%20title%3A%20%7B%0A%20%20%20%20%20%20display%3A%20true%2C%0A%20%20%20%20%20%20text%3A%20%27Modellerin%20Do%C4%9Fruluk%20Oranlar%C4%B1%20Kar%C5%9F%C4%B1la%C5%9Ft%C4%B1rmas%C4%B1%27%2C%0A%20%20%20%20%7D%2C%0A%20%20%20%20scales%3A%20%7B%0A%20%20%20%20%20%20yAxes%3A%20%5B%7Bticks%3A%20%7Bmin%3A%2085%2C%20max%3A%20100%7D%7D%5D%2C%0A%20%20%20%20%7D%2C%0A%20%20%7D%2C%0A%7D" alt="Model Performans Karşılaştırması">
-*Şekil 1: Farklı modellerin doğruluk oranları karşılaştırması.*
+Şekil 1: Farklı modellerin doğruluk oranları karşılaştırması.
 </div>
 
 
@@ -878,7 +878,7 @@ Modelin hata yaptığı noktalar incelendiğinde, hataların büyük bir kısmı
 ---
 <div align="center">
 <img src="https://quickchart.io/chart?c=%7B%0A%20%20type%3A%20%27pie%27%2C%0A%20%20data%3A%20%7B%0A%20%20%20%20labels%3A%20%5B%27S%C3%B6zc%C3%BCksel%20Belirsizlik%27%2C%20%27Nadir%20Morfemler%27%2C%20%27Ba%C4%9Flamsal%20Belirsizlik%27%2C%20%27Yabanc%C4%B1%20Kelimeler%27%2C%20%27Di%C4%9Fer%27%5D%2C%0A%20%20%20%20datasets%3A%20%5B%7B%0A%20%20%20%20%20%20data%3A%20%5B23.5%2C%2018.7%2C%2015.2%2C%2012.8%2C%2029.8%5D%2C%0A%20%20%20%20%20%20backgroundColor%3A%20%5B%27%23FF6384%27%2C%20%27%2336A2EB%27%2C%20%27%23FFCE56%27%2C%20%27%234BC0C0%27%2C%20%27%239966FF%27%5D%2C%0A%20%20%20%20%7D%5D%2C%0A%20%20%7D%2C%0A%20%20options%3A%20%7B%0A%20%20%20%20title%3A%20%7B%0A%20%20%20%20%20%20display%3A%20true%2C%0A%20%20%20%20%20%20text%3A%20%27Hata%20Kategorilerinin%20Da%C4%9F%C4%B1l%C4%B1m%C4%B1%20(%25)%27%2C%0A%20%20%20%20%7D%2C%0A%20%20%7D%2C%0A%7D" alt="Hata Analizi Dağılımı">
-*Şekil 2: Modelin hata kategorilerinin oransal dağılımı.*
+Şekil 2: Modelin hata kategorilerinin oransal dağılımı.
 </div>
 ---
 

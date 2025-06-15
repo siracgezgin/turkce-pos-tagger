@@ -404,7 +404,6 @@ Bu proje akademik bir çalışma olup, topluluk katkılarına açıktır. Katkı
 4. Dalınızı push'layın
 5. Bir Pull Request (Çekme İsteği) açın
 
-```
 
 ### Katmanlı Mimari Detayları
 

@@ -212,11 +212,54 @@ turkish_pos_project/
 
 > **Not:** `model.joblib`, `model_score.json`, `*.conllu` gibi büyük veya üretilmiş dosyalar `.gitignore` ile Git takibinden çıkarılmıştır.
 
+# Türkçe POS Tagger Projesi
+
+**Bursa Teknik Üniversitesi • Bilgisayar Mühendisliği Bölümü**
+
+**BLM0467 Doğal Dil İşlemeye Giriş • 2025 Güz Dönemi • Akademik Dönem Projesi**
+
+## 📖 Projeye Genel Bakış
+
+Bu proje, Türkçe metinler için etkili ve verimli bir Part-of-Speech (POS) Tagger geliştirmeyi amaçlamaktadır. Proje, morfolojik olarak zengin bir dil olan Türkçe'nin zorluklarını ele almak için tasarlanmış, Conditional Random Fields (CRF) tabanlı istatistiksel bir model kullanmaktadır. Sistem, modüler bir yapıda olup komut satırı arayüzü (CLI) ve basit bir grafiksel kullanıcı arayüzü (GUI) ile birlikte gelir.
+
+## 📂 Proje Yapısı
+
+Proje, okunabilirlik ve yönetilebilirlik için pratik ve modüler bir yapıda organize edilmiştir. Bu yapı, veri işleme, model eğitimi, değerlendirme ve kullanım adımlarını net bir şekilde ayırır.
+
+```
+turkish_pos_project/
+│
+├── .gitignore              # Git tarafından takip edilmeyecek dosyaları listeler
+├── README.md               # Bu dosya
+├── requirements.txt        # Gerekli Python kütüphaneleri
+├── veri_donusturucu.py     # Ham .conllu verisini proje formatına çevirir
+├── gui.py                  # Tkinter tabanlı grafiksel kullanıcı arayüzü
+│
+├── code/                   # Projenin ana mantığını içeren Python paketi
+│   ├── __init__.py
+│   ├── main.py             # CLI arayüzünü yönetir (--train, --eval, --tag)
+│   ├── config/             # Yapılandırma klasörü
+│   │   └── settings.py     # Veri yolları gibi sabit ayarlar
+│   ├── core/               # Çekirdek işlevler
+│   │   ├── preprocessing.py
+│   │   ├── feature_extraction.py
+│   │   ├── models.py
+│   │   └── tagger_system.py
+│   └── evaluation/         # Model değerlendirme kodları
+│       └── framework.py
+│
+└── data/                   # İşlenmiş ve kullanıma hazır veriler
+    ├── train/
+    │   └── corpus.txt
+    └── test/
+        └── corpus.txt
+```
+
+> **Not:** `model.joblib`, `model_score.json`, `*.conllu` gibi büyük veya üretilmiş dosyalar `.gitignore` ile Git takibinden çıkarılmıştır.
+
 ## Kurulum ve Çalıştırma Akışı
 
-Sistemi kullanmak için aşağıdaki adımları sırasıyla takip edin.
-
-### 1. Adım: Kurulum
+### Temel Kurulum
 
 **Projeyi Klonlayın:**
 ```bash
@@ -240,11 +283,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Adım: Veri Hazırlama
+### Veri Hazırlama
 
 **Veriyi İndirin:** Modelin eğitimi için Universal Dependencies sitesinden IMST Türkçe veri setini indirin. `tr_imst-ud-train.conllu` ve `tr_imst-ud-test.conllu` dosyalarını projenin ana dizinine kopyalayın.
 
-**Veriyi Dönüştürün:** İndirdiğiniz `.conllu` dosyalarını projenin kullanacağı formata çevirmek için aşağıdaki script'i çalıştırın:
+**Veriyi Dönüştürün:** İndirdiğiniz `.conllu` dosylarını projenin kullanacağı formata çevirmek için aşağıdaki script'i çalıştırın:
 
 ```bash
 python veri_donusturucu.py
@@ -252,7 +295,7 @@ python veri_donusturucu.py
 
 Bu komut, işlenmiş verileri `data/train/corpus.txt` ve `data/test/corpus.txt` dosyalarına yazacaktır.
 
-### 3. Adım: Model Eğitimi ve Değerlendirme
+### Model Eğitimi ve Değerlendirme
 
 **Modeli Eğitin:** Aşağıdaki komut ile `data/train` klasöründeki veriyi kullanarak modeli eğitin.
 
@@ -270,11 +313,9 @@ python code/main.py --eval
 
 İşlem tamamlandığında, projenin ana dizininde `model_score.json` adında, doğruluk ve F1-skoru gibi metrikleri içeren bir dosya oluşacaktır.
 
-### 4. Adım: Etiketleyiciyi Kullanma
+## Kullanım
 
-Modelinizi eğittikten sonra, metinleri etiketlemek için iki seçeneğiniz vardır:
-
-#### A. Komut Satırı Arayüzü (CLI)
+### Komut Satırı Arayüzü (CLI)
 
 Tek bir cümleyi hızlıca etiketlemek için `--tag` argümanını kullanın:
 
@@ -287,7 +328,7 @@ python code/main.py --tag "Bursa Teknik Üniversitesi önemli bir kurumdur."
 [('Bursa', 'PROPN'), ('Teknik', 'PROPN'), ('Üniversitesi', 'PROPN'), (',', 'PUNCT'), ('önemli', 'ADJ'), ('bir', 'DET'), ('kurumdur', 'NOUN'), ('.', 'PUNCT')]
 ```
 
-#### B. Grafiksel Kullanıcı Arayüzü (GUI)
+### Grafiksel Kullanıcı Arayüzü (GUI)
 
 Kullanımı daha kolay bir arayüz için `gui.py` script'ini çalıştırın:
 
@@ -298,6 +339,67 @@ python gui.py
 Açılan penceredeki metin kutusuna etiketlemek istediğiniz cümleyi yazın ve "Etiketle" butonuna tıklayın. Sonuçlar aşağıdaki metin alanında gösterilecektir.
 
 > **Not:** `gui.py` dosyası, Tkinter kütüphanesini kullanır ve temel bir arayüz sunar.
+
+## Kurulum ve Deployment
+
+Bu bölüm, sistemin yerel bir makinede kurulumu, test edilmesi ve bir sunucu ortamında canlıya alınması için gerekli adımları içerir.
+
+### Yerel Geliştirme Ortamı Kurulumu
+
+**Gereksinimler:**
+- Python (3.8+)
+- Git
+- Docker (Opsiyonel, containerization için)
+
+**Repository'yi Klonlama:**
+```bash
+git clone https://github.com/siracgezgin/turkce-pos-tagger.git
+cd turkce-pos-tagger
+```
+
+**Sanal Ortam ve Bağımlılıklar:**
+Geliştirme bağımlılıklarının sistem genelindeki paketlerden izole edilmesi için bir sanal ortam kullanılması şiddetle tavsiye edilir.
+
+```bash
+# Sanal ortamı oluştur
+python -m venv venv
+
+# Sanal ortamı aktifleştir
+# Windows
+.\venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+
+# Geliştirme için gerekli tüm bağımlılıkları yükle
+pip install -r requirements/dev.txt
+```
+
+**Testleri Çalıştırma:**
+Kurulumun başarılı olduğunu doğrulamak ve sistemin bütünlüğünü kontrol etmek için testleri çalıştırın:
+
+```bash
+pytest tests/
+```
+
+### Docker ile Deployment
+
+Proje, Docker kullanılarak kolayca container haline getirilebilir ve herhangi bir ortamda tutarlı bir şekilde çalıştırılabilir.
+
+**Development Image Oluşturma:**
+```bash
+docker-compose build dev
+```
+
+**Production Image Oluşturma ve Çalıştırma:**
+```bash
+# Production image'ını build et
+docker build -t turkce-pos-tagger:latest -f docker/Dockerfile.prod .
+
+# Container'ı çalıştır
+docker run -d -p 8000:8000 turkce-pos-tagger:latest
+```
+
+API artık `http://localhost:8000` adresinde erişilebilir olacaktır.
 
 ## Katkıda Bulunma
 
@@ -737,66 +839,6 @@ if __name__ == "__main__":
     active_learner = ActiveLearningFramework(base_model=hybrid_model, max_iterations=5)
     active_learner.iterative_improvement(unlabeled_data=mock_unlabeled_data)
 ```
-
----
-
-### ⚙️ Kurulum ve Deployment
-
-Bu bölüm, sistemin yerel bir makinede kurulumu, test edilmesi ve bir sunucu ortamında canlıya alınması için gerekli adımları içerir.
-
-#### Yerel Geliştirme Ortamı Kurulumu
-
-1.  **Gereksinimler:**
-    * Python (3.8+)
-    * Git
-    * Docker (Opsiyonel, containerization için)
-
-2.  **Repository'yi Klonlama:**
-    ```bash
-    git clone https://github.com/siracgezgin/turkce-pos-tagger.git
-    cd turkce-pos-tagger
-    ```
-
-3.  **Sanal Ortam ve Bağımlılıklar:**
-    Geliştirme bağımlılıklarının sistem genelindeki paketlerden izole edilmesi için bir sanal ortam kullanılması şiddetle tavsiye edilir.
-    ```bash
-    # Sanal ortamı oluştur
-    python -m venv venv
-
-    # Sanal ortamı aktifleştir
-    # Windows
-    .\venv\Scripts\activate
-    # macOS / Linux
-    source venv/bin/activate
-
-    # Geliştirme için gerekli tüm bağımlılıkları yükle
-    pip install -r requirements/dev.txt
-    ```
-
-4.  **Testleri Çalıştırma:**
-    Kurulumun başarılı olduğunu doğrulamak ve sistemin bütünlüğünü kontrol etmek için testleri çalıştırın:
-    ```bash
-    pytest tests/
-    ```
-
-#### Docker ile Deployment
-
-Proje, Docker kullanılarak kolayca container haline getirilebilir ve herhangi bir ortamda tutarlı bir şekilde çalıştırılabilir.
-
-1.  **Development Image Oluşturma:**
-    ```bash
-    docker-compose build dev
-    ```
-
-2.  **Production Image Oluşturma ve Çalıştırma:**
-    ```bash
-    # Production image'ını build et
-    docker build -t turkce-pos-tagger:latest -f docker/Dockerfile.prod .
-
-    # Container'ı çalıştır
-    docker run -d -p 8000:8000 turkce-pos-tagger:latest
-    ```
-    API artık `http://localhost:8000` adresinde erişilebilir olacaktır.
 
 ---
 

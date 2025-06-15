@@ -43,7 +43,7 @@
 ## 📖 Proje Hakkında
 
 <p align="center">
-  <img src="https://i.imgur.com/k6lP0W3.png" alt="Uygulama Ekran Görüntüsü" width="80%">
+  
 </p>
 
 Bu proje, **Doğal Dil İşlemeye Giriş** dersi kapsamında geliştirilmiştir. Temel amacı, Türkçe gibi morfolojik açıdan zengin ve eklemeli dillerin getirdiği zorlukları aşarak, metin içerisindeki her bir kelimeyi dilbilgisel kategorisine (İsim, Fiil, Sıfat vb.) doğru bir şekilde atamaktır.

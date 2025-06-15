@@ -178,106 +178,54 @@ Türkçe'nin morfolojik özelliklerini kullanan veri artırma teknikleri:
 
 ### Modüler Tasarım Felsefesi
 
-Sistemimiz, **SOLID prensiplerine** uygun, gevşek bağlı (loosely coupled) ve yüksek uyum (high cohesion) özelliklerine sahip modüler bir tasarımla geliştirilmiştir.
+Sistemimiz, **SOLID prensiplerine** uygun, gevşek bağlı (loosely coupled) ve yüksek uyum (high cohesion) özelliklerine sahip modüler bir tasarımla geliştirilmiştir. Her bir modül, belirli bir sorumluluğu yerine getirerek sistemin genel karmaşıklığını yönetmeyi kolaylaştırır.
+
+Projenin mevcut dosya ve klasör yapısı aşağıdaki gibidir:
 
 ```
 turkce-pos-tagger/
-├── kod/
-│   ├── core/                    # Çekirdek sistem bileşenleri
-│   │   ├── pipeline.py             # Ana işlem hattı yöneticisi
-│   │   ├── models/                 # ML model implementations
-│   │   │   ├── crf_tagger.py       # CRF tabanlı etiketleyici
-│   │   │   ├── hybrid_ensemble.py  # Hibrit ensemble model
-│   │   │   └── uncertainty_model.py # Belirsizlik modelleme
-│   │   ├── preprocessors/          # Ön işleme modülleri
-│   │   │   ├── tokenizer.py        # Türkçe-özel tokenizer
-│   │   │   ├── normalizer.py       # Metin normalizasyonu
-│   │   │   └── sentence_splitter.py # Cümle segmentasyonu
-│   │   └── postprocessors/         # Son işleme modülleri
-│   │       ├── rule_applier.py     # Kural tabanlı düzeltmeler
-│   │       └── consistency_checker.py # Tutarlılık kontrolü
+│
+├── kod/                  # Ana Python kaynak kodları
+│   ├── augmentation/       # Veri artırma modülleri
+│   │   ├── __init__.py
+│   │   └── augmenter.py
 │   │
-│   ├── features/                # Özellik çıkarma sistemleri
-│   │   ├── morphological.py        # Morfolojik özellik çıkarıcı
-│   │   ├── contextual.py           # Bağlamsal özellik çıkarıcı
-│   │   ├── syntactic.py            # Sözdizimsel özellik çıkarıcı
-│   │   └── fusion.py               # Çok ölçekli özellik füzyonu
+│   ├── config/             # Yapılandırma yönetimi
+│   │   ├── __init__.py
+│   │   └── settings.py
 │   │
-│   ├── augmentation/            # Veri artırma teknikleri
-│   │   ├── morphological_aug.py    # Morfolojik veri artırma
-│   │   ├── contextual_aug.py       # Bağlamsal veri artırma
-│   │   └── synthetic_generator.py  # Sentetik veri üretimi
+│   ├── core/               # Çekirdek sistem bileşenleri
+│   │   ├── __init__.py
+│   │   ├── feature_extraction.py
+│   │   ├── models.py
+│   │   ├── preprocessing.py
+│   │   └── tagger_system.py
 │   │
-│   ├── config/                  # Yapılandırma yönetimi
-│   │   ├── model_config.py         # Model hiperparametreleri
-│   │   ├── feature_config.py       # Özellik yapılandırması
-│   │   └── pipeline_config.py      # Pipeline ayarları
+│   ├── evaluation/         # Değerlendirme ve metrikler
+│   │   ├── __init__.py
+│   │   ├── framework.py
+│   │   └── monitor.py
 │   │
-│   ├── evaluation/              # Değerlendirme ve metrikler
-│   │   ├── metrics.py              # Performans metrikleri
-│   │   ├── error_analysis.py       # Hata analizi araçları
-│   │   └── benchmark.py            # Karşılaştırmalı test
+│   ├── postprocessing/      # Model sonrası kural tabanlı düzeltmeler
+│   │   ├── __init__.py
+│   │   └── consistency.py
 │   │
-│   ├── utils/                   # Yardımcı araçlar
-│   │   ├── data_loader.py          # Veri yükleme utilities
-│   │   ├── logger.py               # Loglama sistemi
-│   │   └── visualization.py        # Görselleştirme araçları
+│   ├── utils/               # Yardımcı araçlar (genel fonksiyonlar)
+│   │   └── __init__.py
 │   │
-│   └── main.py                  # Ana uygulama giriş noktası
+│   ├── __init__.py
+│   └── main.py              # Sistemin ana giriş noktası
 │
-├── data/                        # Veri setleri ve kaynaklar
-│   ├── raw/                        # Ham veri dosyaları
-│   ├── processed/                  # İşlenmiş veri setleri
-│   ├── lexicons/                   # Sözlükler ve morfolojik kaynaklar
-│   │   ├── turkish_lexicon.json    # Türkçe kelime listesi
-│   │   ├── morphological_rules.xml # Morfolojik kurallar
-│   │   └── pos_tagsets.yaml        # POS etiket setleri
-│   └── models/                     # Eğitilmiş model dosyaları
+├── data/                  # Veri setleri (eğitim, doğrulama, test)
+│   ├── test/
+│   ├── train/
+│   └── validation/
 │
-├── notebooks/                   # Araştırma ve analiz notebook'ları
-│   ├── 01_data_exploration.ipynb   # Veri keşfi ve analizi
-│   ├── 02_feature_engineering.ipynb # Özellik mühendisliği
-│   ├── 03_model_training.ipynb     # Model eğitimi
-│   ├── 04_evaluation_analysis.ipynb # Değerlendirme analizi
-│   └── 05_error_analysis.ipynb     # Hata analizi
+├── notebooks/              # Araştırma ve analiz notebook'ları
+│   └── experimental_analysis.ipynb
 │
-├── tests/                       # Birim ve entegrasyon testleri
-│   ├── unit/                       # Birim testler
-│   ├── integration/                # Entegrasyon testleri
-│   └── performance/                # Performans testleri
-│
-├── docs/                        # Dokümantasyon
-│   ├── api/                        # API dokümantasyonu
-│   ├── tutorials/                  # Kullanım kılavuzları
-│   └── research/                   # Araştırma makaleleri
-│
-├── docker/                      # Containerization
-│   ├── Dockerfile.dev              # Development environment
-│   ├── Dockerfile.prod             # Production environment
-│   └── docker-compose.yml          # Multi-container setup
-│
-├── scripts/                     # Automation scripts
-│   ├── train.sh                    # Model eğitim scripti
-│   ├── evaluate.sh                 # Değerlendirme scripti
-│   └── deploy.sh                   # Deployment scripti
-│
-├── requirements/                # Dependency management
-│   ├── base.txt                    # Temel bağımlılıklar
-│   ├── dev.txt                     # Development bağımlılıkları
-│   └── prod.txt                    # Production bağımlılıkları
-│
-├── .github/                     # GitHub workflows
-│   └── workflows/
-│       ├── ci.yml                  # Continuous Integration
-│       ├── cd.yml                  # Continuous Deployment  
-│       └── tests.yml               # Automated testing
-│
-├── README.md                    # Proje dokümantasyonu
-├── LICENSE                      # MIT License
-├── CHANGELOG.md                # Sürüm geçmişi
-├── CONTRIBUTING.md              # Katkı rehberi
-├── SECURITY.md                  # Güvenlik politikası
-└── pyproject.toml               # Modern Python packaging
+├── README.md               # Proje dokümantasyonu (bu dosya)
+└── requirements.txt         # Proje bağımlılıkları
 ```
 
 ### Katmanlı Mimari Detayları

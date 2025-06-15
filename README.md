@@ -45,6 +45,8 @@
 
 Bu çalışma, **Türkçe'nin morfolojik zenginliği ve sözdizimsel karmaşıklığından** kaynaklanan Part-of-Speech (POS) tagging zorluklarını ele alan, **akademik araştırma standardında** geliştirilmiş bir hibrit sistemdir. Proje, geleneksel istatistiksel yöntemler ile modern makine öğrenmesi tekniklerini birleştirerek, **Türkçe doğal dil işleme** alanında özgün bir katkı sunmaktadır.
 
+Sistem, Türkçe metinler için etkili ve verimli bir Part-of-Speech (POS) Tagger geliştirmeyi amaçlamaktadır. Morfolojik olarak zengin bir dil olan Türkçe'nin zorluklarını ele almak için tasarlanmış, Conditional Random Fields (CRF) tabanlı istatistiksel bir model kullanmaktadır. Modüler yapıda geliştirilmiş olan sistem, komut satırı arayüzü (CLI) ve grafiksel kullanıcı arayüzü (GUI) ile birlikte sunulmaktadır.
+
 ### Temel Hedefler
 
 - **Yüksek Doğruluk**: Türkçe metinlerde %96+ POS tagging doğruluğu
@@ -212,15 +214,6 @@ turkish_pos_project/
 
 > **Not:** `model.joblib`, `model_score.json`, `*.conllu` gibi büyük veya üretilmiş dosyalar `.gitignore` ile Git takibinden çıkarılmıştır.
 
-# Türkçe POS Tagger Projesi
-
-**Bursa Teknik Üniversitesi • Bilgisayar Mühendisliği Bölümü**
-
-**BLM0467 Doğal Dil İşlemeye Giriş • 2025 Güz Dönemi • Akademik Dönem Projesi**
-
-## Projeye Genel Bakış
-
-Bu proje, Türkçe metinler için etkili ve verimli bir Part-of-Speech (POS) Tagger geliştirmeyi amaçlamaktadır. Proje, morfolojik olarak zengin bir dil olan Türkçe'nin zorluklarını ele almak için tasarlanmış, Conditional Random Fields (CRF) tabanlı istatistiksel bir model kullanmaktadır. Sistem, modüler bir yapıda olup komut satırı arayüzü (CLI) ve basit bir grafiksel kullanıcı arayüzü (GUI) ile birlikte gelir.
 
 ## Proje Yapısı
 

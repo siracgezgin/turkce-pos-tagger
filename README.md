@@ -182,8 +182,8 @@ Sistemimiz, **SOLID prensiplerine** uygun, gevşek bağlı (loosely coupled) ve 
 
 ```
 turkce-pos-tagger/
-├── 📁 kod/
-│   ├── 🧠 core/                    # Çekirdek sistem bileşenleri
+├── kod/
+│   ├── core/                    # Çekirdek sistem bileşenleri
 │   │   ├── pipeline.py             # Ana işlem hattı yöneticisi
 │   │   ├── models/                 # ML model implementations
 │   │   │   ├── crf_tagger.py       # CRF tabanlı etiketleyici
@@ -197,35 +197,35 @@ turkce-pos-tagger/
 │   │       ├── rule_applier.py     # Kural tabanlı düzeltmeler
 │   │       └── consistency_checker.py # Tutarlılık kontrolü
 │   │
-│   ├── 🔍 features/                # Özellik çıkarma sistemleri
+│   ├── features/                # Özellik çıkarma sistemleri
 │   │   ├── morphological.py        # Morfolojik özellik çıkarıcı
 │   │   ├── contextual.py           # Bağlamsal özellik çıkarıcı
 │   │   ├── syntactic.py            # Sözdizimsel özellik çıkarıcı
 │   │   └── fusion.py               # Çok ölçekli özellik füzyonu
 │   │
-│   ├── 🎯 augmentation/            # Veri artırma teknikleri
+│   ├── augmentation/            # Veri artırma teknikleri
 │   │   ├── morphological_aug.py    # Morfolojik veri artırma
 │   │   ├── contextual_aug.py       # Bağlamsal veri artırma
 │   │   └── synthetic_generator.py  # Sentetik veri üretimi
 │   │
-│   ├── ⚙️ config/                  # Yapılandırma yönetimi
+│   ├── config/                  # Yapılandırma yönetimi
 │   │   ├── model_config.py         # Model hiperparametreleri
 │   │   ├── feature_config.py       # Özellik yapılandırması
 │   │   └── pipeline_config.py      # Pipeline ayarları
 │   │
-│   ├── 📊 evaluation/              # Değerlendirme ve metrikler
+│   ├── evaluation/              # Değerlendirme ve metrikler
 │   │   ├── metrics.py              # Performans metrikleri
 │   │   ├── error_analysis.py       # Hata analizi araçları
 │   │   └── benchmark.py            # Karşılaştırmalı test
 │   │
-│   ├── 🛠️ utils/                   # Yardımcı araçlar
+│   ├── utils/                   # Yardımcı araçlar
 │   │   ├── data_loader.py          # Veri yükleme utilities
 │   │   ├── logger.py               # Loglama sistemi
 │   │   └── visualization.py        # Görselleştirme araçları
 │   │
-│   └── 🚀 main.py                  # Ana uygulama giriş noktası
+│   └── main.py                  # Ana uygulama giriş noktası
 │
-├── 📊 data/                        # Veri setleri ve kaynaklar
+├── data/                        # Veri setleri ve kaynaklar
 │   ├── raw/                        # Ham veri dosyaları
 │   ├── processed/                  # İşlenmiş veri setleri
 │   ├── lexicons/                   # Sözlükler ve morfolojik kaynaklar
@@ -234,50 +234,50 @@ turkce-pos-tagger/
 │   │   └── pos_tagsets.yaml        # POS etiket setleri
 │   └── models/                     # Eğitilmiş model dosyaları
 │
-├── 📓 notebooks/                   # Araştırma ve analiz notebook'ları
+├── notebooks/                   # Araştırma ve analiz notebook'ları
 │   ├── 01_data_exploration.ipynb   # Veri keşfi ve analizi
 │   ├── 02_feature_engineering.ipynb # Özellik mühendisliği
 │   ├── 03_model_training.ipynb     # Model eğitimi
 │   ├── 04_evaluation_analysis.ipynb # Değerlendirme analizi
 │   └── 05_error_analysis.ipynb     # Hata analizi
 │
-├── 🧪 tests/                       # Birim ve entegrasyon testleri
+├── tests/                       # Birim ve entegrasyon testleri
 │   ├── unit/                       # Birim testler
 │   ├── integration/                # Entegrasyon testleri
 │   └── performance/                # Performans testleri
 │
-├── 📚 docs/                        # Dokümantasyon
+├── docs/                        # Dokümantasyon
 │   ├── api/                        # API dokümantasyonu
 │   ├── tutorials/                  # Kullanım kılavuzları
 │   └── research/                   # Araştırma makaleleri
 │
-├── 🐳 docker/                      # Containerization
+├── docker/                      # Containerization
 │   ├── Dockerfile.dev              # Development environment
 │   ├── Dockerfile.prod             # Production environment
 │   └── docker-compose.yml          # Multi-container setup
 │
-├── ⚙️ scripts/                     # Automation scripts
+├── scripts/                     # Automation scripts
 │   ├── train.sh                    # Model eğitim scripti
 │   ├── evaluate.sh                 # Değerlendirme scripti
 │   └── deploy.sh                   # Deployment scripti
 │
-├── 📋 requirements/                # Dependency management
+├── requirements/                # Dependency management
 │   ├── base.txt                    # Temel bağımlılıklar
 │   ├── dev.txt                     # Development bağımlılıkları
 │   └── prod.txt                    # Production bağımlılıkları
 │
-├── 🔧 .github/                     # GitHub workflows
+├── .github/                     # GitHub workflows
 │   └── workflows/
 │       ├── ci.yml                  # Continuous Integration
 │       ├── cd.yml                  # Continuous Deployment  
 │       └── tests.yml               # Automated testing
 │
-├── 📄 README.md                    # Proje dokümantasyonu
-├── 📜 LICENSE                      # MIT License
-├── 🏷️ CHANGELOG.md                # Sürüm geçmişi
-├── 🤝 CONTRIBUTING.md              # Katkı rehberi
-├── 🔒 SECURITY.md                  # Güvenlik politikası
-└── ⚙️ pyproject.toml               # Modern Python packaging
+├── README.md                    # Proje dokümantasyonu
+├── LICENSE                      # MIT License
+├── CHANGELOG.md                # Sürüm geçmişi
+├── CONTRIBUTING.md              # Katkı rehberi
+├── SECURITY.md                  # Güvenlik politikası
+└── pyproject.toml               # Modern Python packaging
 ```
 
 ### Katmanlı Mimari Detayları

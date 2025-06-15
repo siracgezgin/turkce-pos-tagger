@@ -218,11 +218,11 @@ turkish_pos_project/
 
 **BLM0467 Doğal Dil İşlemeye Giriş • 2025 Güz Dönemi • Akademik Dönem Projesi**
 
-## 📖 Projeye Genel Bakış
+## Projeye Genel Bakış
 
 Bu proje, Türkçe metinler için etkili ve verimli bir Part-of-Speech (POS) Tagger geliştirmeyi amaçlamaktadır. Proje, morfolojik olarak zengin bir dil olan Türkçe'nin zorluklarını ele almak için tasarlanmış, Conditional Random Fields (CRF) tabanlı istatistiksel bir model kullanmaktadır. Sistem, modüler bir yapıda olup komut satırı arayüzü (CLI) ve basit bir grafiksel kullanıcı arayüzü (GUI) ile birlikte gelir.
 
-## 📂 Proje Yapısı
+## Proje Yapısı
 
 Proje, okunabilirlik ve yönetilebilirlik için pratik ve modüler bir yapıda organize edilmiştir. Bu yapı, veri işleme, model eğitimi, değerlendirme ve kullanım adımlarını net bir şekilde ayırır.
 

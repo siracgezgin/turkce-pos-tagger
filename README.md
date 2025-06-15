@@ -915,8 +915,6 @@ Bu çalışmanın teorik altyapısı ve literatür analizi, aşağıdaki temel a
 
 Bu projeyi kendi çalışmanızda referans göstermek için lütfen `README.md` dosyasının üst kısmındaki BibTeX formatını kullanın.
 
----
-
 ### Lisans ve İletişim
 
 #### Lisans
@@ -924,10 +922,10 @@ Bu proje **MIT Lisansı** altında lisanslanmıştır. Detaylar için `LICENSE` 
 
 #### İletişim
 **Proje Ekibi:**
-* [cite_start]Ali Erdem Baltacı - `21360859011` [cite: 1]
-* [cite_start]Musa Adıgüzel - `22360859328` [cite: 1]
-* [cite_start]Nazmi Cirim - `21360859069` [cite: 1]
-* [cite_start]Siraç Gezgin - `22360859058` [cite: 1]
+* Ali Erdem Baltacı - `21360859011`
+* Musa Adıgüzel - `22360859328`
+* Nazmi Cirim - `21360859069`
+* Siraç Gezgin - `22360859058`
 
 **Proje Danışmanı:**
-* Dr. Öğr. [cite_start]Üyesi Hayri Volkan AGUN [cite: 2]
+* Dr. Öğr. Üyesi Hayri Volkan AGUN

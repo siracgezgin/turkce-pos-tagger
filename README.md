@@ -99,9 +99,9 @@ graph TD
 
 ---
 
-## 🔬 Araştırma Motivasyonu ve Bilimsel Katkılar
+## Araştırma Motivasyonu ve Bilimsel Katkılar
 
-### 📈 Literatür Analizi ve Mevcut Durum
+### Literatür Analizi ve Mevcut Durum
 
 Türkçe POS tagging alanında yapılan çalışmalar kronolojik olarak şu şekilde gelişim göstermiştir:
 
@@ -113,7 +113,7 @@ Türkçe POS tagging alanında yapılan çalışmalar kronolojik olarak şu şek
 | **2015-2020** | Derin Öğrenme | Şeker & Eryiğit (2017), Kuru et al. (2020) | ~96% | Yüksek hesaplama maliyeti, veri açlığı |
 | **2020-2025** | Transformer | BERTurk, ConvBERT-TR | ~98% | Massive model boyutu, deployment zorluğu |
 
-### 🔬 Özgün Bilimsel Katkılarımız
+### Özgün Bilimsel Katkılarımız
 
 **1. Uyarlanabilir Morfolojik Segmentasyon Algoritması**
 
@@ -229,7 +229,7 @@ turkce-pos-tagger/
 └── requirements.txt         # Proje bağımlılıkları
 ```
 
-### 🏛️ Katmanlı Mimari Detayları
+### Katmanlı Mimari Detayları
 
 **1. Veri Erişim Katmanı (Data Access Layer)**
 
@@ -319,9 +319,9 @@ class POSTaggingAPI:
 
 ---
 
-## 💡 İnovatif Yaklaşımlar ve Algoritmalar
+## İnovatif Yaklaşımlar ve Algoritmalar
 
-### 🧠 Hibrit Ensemble Modeli
+### Hibrit Ensemble Modeli
 
 Sistemimizin kalbi olan hibrit model, farklı yaklaşımların güçlü yanlarını birleştiren **ensemble architecture** kullanmaktadır:
 
@@ -374,7 +374,7 @@ class HybridEnsembleModel:
         )
 ```
 
-### 🔍 Gelişmiş Özellik Mühendisliği
+### Gelişmiş Özellik Mühendisliği
 
 **Morfolojik Özellik Çıkarıcı:**
 
@@ -457,7 +457,7 @@ class ContextualFeatureExtractor:
         return features
 ```
 
-### 🎯 Uyarlanabilir Öğrenme Stratejileri
+### Uyarlanabilir Öğrenme Stratejileri
 
 **Aktif Öğrenme ile Model İyileştirme:**
 
@@ -830,7 +830,7 @@ curl -X POST http://localhost:8000/api/v1/tag \
 
 ---
 
-### 🔬 Deneysel Sonuçlar ve Ablasyon Çalışmaları
+### Deneysel Sonuçlar ve Ablasyon Çalışmaları
 
 Sistemimizin başarısına katkıda bulunan bileşenlerin önemini analiz etmek için ablasyon çalışmaları (sistematik olarak bileşenleri çıkarma) yürütülmüştür.
 
@@ -861,7 +861,7 @@ Bu proje açık kaynaklıdır ve topluluk katkılarına açıktır. Katkıda bul
 
 ---
 
-### 🎓 Akademik Referanslar ve Atıflar
+### Akademik Referanslar ve Atıflar
 
 Bu çalışmanın teorik altyapısı ve literatür analizi, aşağıdaki temel akademik makalelere dayanmaktadır:
 
@@ -876,7 +876,7 @@ Bu çalışmanın teorik altyapısı ve literatür analizi, aşağıdaki temel a
 9.  Yuret, D., & Türe, F. (2006). "Learning morphological disambiguation rules for Turkish". *Proceedings of HLT-NAACL*, 328-334.
 ---
 
-### ⚖️ Lisans ve İletişim
+### Lisans ve İletişim
 
 #### Lisans
 Bu proje **MIT Lisansı** altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız.

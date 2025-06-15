@@ -903,15 +903,15 @@ Bu proje açık kaynaklıdır ve topluluk katkılarına açıktır. Katkıda bul
 
 Bu çalışmanın teorik altyapısı ve literatür analizi, aşağıdaki temel akademik makalelere dayanmaktadır:
 
-1.  Oflazer, K. (2003). "Dependency parsing with an extended finite-state approach". [cite_start]*Computational Linguistics, 29*(4), 515-544. [cite: 185]
-2.  Eryiğit, G., Nivre, J., & Oflazer, K. (2008). "Dependency parsing of Turkish". [cite_start]*Computational Linguistics, 34*(3), 357-389. [cite: 186]
-3.  Sak, H., Güngör, T., & Saraçlar, M. (2008). "Turkish language resources: morphological parser, morphological disambiguator and web corpus". [cite_start]*GoTAL 2008, 417-427*. [cite: 187]
-4.  Hakkani-Tür, D. Z., Oflazer, K., & Tür, G. (2002). "Statistical morphological disambiguation for agglutinative languages". [cite_start]*Computers and the Humanities, 36*(4), 381-410. [cite: 190]
-5.  Lafferty, J., McCallum, A., & Pereira, F. C. (2001). "Conditional random fields: Probabilistic models for segmenting and labeling sequence data". [cite_start]*Proceedings of the 18th International Conference on Machine Learning*, 282-289. [cite: 191]
-6.  Huang, Z., Xu, W., & Yu, K. (2015). "Bidirectional LSTM-CRF models for sequence tagging". [cite_start]*arXiv preprint arXiv:1508.01991*. [cite: 193]
-7.  Akın, A. A., & Akın, M. D. (2007). "Zemberek, an open source NLP framework for Turkic languages". [cite_start]*Structure, 10*, 1-5. [cite: 200]
-8.  Nivre, J., et al. (2016). "Universal dependencies v1: A multilingual treebank collection". [cite_start]*Proceedings of the Tenth International Conference on Language Resources and Evaluation*, 1659-1666. [cite: 201]
-9.  Yuret, D., & Türe, F. (2006). "Learning morphological disambiguation rules for Turkish". [cite_start]*Proceedings of HLT-NAACL*, 328-334. [cite: 205]
+1.  Oflazer, K. (2003). "Dependency parsing with an extended finite-state approach". *Computational Linguistics, 29*(4), 515-544.
+2.  Eryiğit, G., Nivre, J., & Oflazer, K. (2008). "Dependency parsing of Turkish". *Computational Linguistics, 34*(3), 357-389.
+3.  Sak, H., Güngör, T., & Saraçlar, M. (2008). "Turkish language resources: morphological parser, morphological disambiguator and web corpus". *GoTAL 2008, 417-427*.
+4.  Hakkani-Tür, D. Z., Oflazer, K., & Tür, G. (2002). "Statistical morphological disambiguation for agglutinative languages". *Computers and the Humanities, 36*(4), 381-410.
+5.  Lafferty, J., McCallum, A., & Pereira, F. C. (2001). "Conditional random fields: Probabilistic models for segmenting and labeling sequence data". *Proceedings of the 18th International Conference on Machine Learning*, 282-289.
+6.  Huang, Z., Xu, W., & Yu, K. (2015). "Bidirectional LSTM-CRF models for sequence tagging". *arXiv preprint arXiv:1508.01991*.
+7.  Akın, A. A., & Akın, M. D. (2007). "Zemberek, an open source NLP framework for Turkic languages". *Structure, 10*, 1-5.
+8.  Nivre, J., et al. (2016). "Universal dependencies v1: A multilingual treebank collection". *Proceedings of the Tenth International Conference on Language Resources and Evaluation*, 1659-1666.
+9.  Yuret, D., & Türe, F. (2006). "Learning morphological disambiguation rules for Turkish". *Proceedings of HLT-NAACL*, 328-334.
 
 Bu projeyi kendi çalışmanızda referans göstermek için lütfen `README.md` dosyasının üst kısmındaki BibTeX formatını kullanın.
 

@@ -513,61 +513,421 @@ class ContextualFeatureExtractor:
 **Aktif Öğrenme ile Model İyileştirme:**
 
 ```python
+import numpy as np
+from typing import List, Dict, Any
+
+# Proje genelinde kullanılacak veri yapıları için takma adlar (type hints)
+# Bu, kodun okunabilirliğini artırır.
+Prediction = Dict[str, Any]
+Dataset = List[Dict[str, Any]]
+
+# --- Simülasyon için Yardımcı Sınıflar ve Modeller ---
+
+class HybridEnsembleModel:
+    """
+    Ana model sınıfımızın basitleştirilmiş bir temsili.
+    Aktif öğrenme döngüsünde bu modelin tahminlerine ve eğitim fonksiyonuna ihtiyaç duyulur.
+    """
+    def incremental_train(self, labeled_samples: Dataset) -> None:
+        """
+        Yeni etiketlenmiş verilerle modeli artımlı olarak yeniden eğitir.
+        Gerçek bir uygulamada, modelin ağırlıkları bu yeni verilerle güncellenirdi.
+        """
+        print(f"  -> Model, {len(labeled_samples)} yeni etiketli örnekle artımlı olarak eğitiliyor...")
+        # Gerçek eğitim kodu burada yer alırdı.
+        pass
+
+    def predict_for_active_learning(self, data: Dataset) -> List[Prediction]:
+        """
+        Aktif öğrenme için gerekli detaylı tahminleri üretir (simülasyon).
+        Her tahmin, olasılık dağılımı ve ensemble modellerin bireysel tahminlerini içerir.
+        """
+        simulated_predictions = []
+        for sample in data:
+            # Her örnek için rastgele ama tutarlı tahminler üretelim
+            np.random.seed(sample['id']) # Tekrarlanabilir sonuçlar için
+            probs = np.random.dirichlet(np.ones(5), size=1)[0]
+            models = ['NOUN', 'NOUN', 'VERB', 'ADJ', 'PROPN']
+            
+            simulated_predictions.append({
+                'final_prediction': np.random.choice(models, p=[0.5, 0.2, 0.1, 0.1, 0.1]),
+                'probability_distribution': probs,
+                'individual_predictions': np.random.choice(models, size=3).tolist(),
+                'context': sample['context']
+            })
+        return simulated_predictions
+
+class UncertaintySampler:
+    """
+    Etiketlenmemiş veriler arasından, tanımlanan stratejiye göre en belirsiz olanları seçer.
+    """
+    def _calculate_total_uncertainty(self, pred: Prediction) -> float:
+        """
+        Tek bir tahmin için toplam belirsizlik skorunu hesaplayan strateji.
+        """
+        # 1. Entropy tabanlı belirsizlik (modelin genel kararsızlığı)
+        probs = [p for p in pred['probability_distribution'] if p > 0]
+        entropy = -sum(p * np.log2(p) for p in probs) if probs else 0.0
+        
+        # 2. Model uyuşmazlığı (ensemble içindeki modellerin anlaşmazlığı)
+        ind_preds = pred['individual_predictions']
+        disagreement = (len(set(ind_preds)) - 1) / (len(ind_preds) - 1) if len(ind_preds) > 1 else 0.0
+        
+        # 3. Bağlamsal belirsizlik (bağlamın ne kadar "nadir" olduğu - simülasyon)
+        contextual_uncertainty = sum(1 for word in pred['context'] if len(word) > 8) / len(pred['context'])
+        
+        # Ağırlıklı kombinasyon belirsizlik skoru
+        total_uncertainty = (0.4 * entropy + 0.4 * disagreement + 0.2 * contextual_uncertainty)
+        return total_uncertainty
+
+    def select_samples(self, unlabeled_data: Dataset, model: HybridEnsembleModel, sample_size: int) -> Dataset:
+        """
+        Modeli kullanarak etiketlenmemiş veri seti üzerindeki en belirsiz örnekleri seçer.
+        """
+        print(f"  -> {len(unlabeled_data)} etiketlenmemiş örnek üzerinde belirsizlik hesaplanıyor...")
+        
+        predictions = model.predict_for_active_learning(unlabeled_data)
+        
+        # Her bir örnek için belirsizlik skorunu hesapla
+        uncertainty_scores = [self._calculate_total_uncertainty(pred) for pred in predictions]
+        
+        # En yüksek skora sahip örneklerin indekslerini bul
+        # argsort, küçükten büyüğe sıralar, [::-1] ile ters çeviririz.
+        sorted_indices = np.argsort(uncertainty_scores)[::-1]
+        top_indices = sorted_indices[:sample_size]
+        
+        print(f"  -> En belirsiz {sample_size} örnek seçildi.")
+        return [unlabeled_data[i] for i in top_indices]
+
+class OracleSimulator:
+    """
+    Bir "insan uzmanı" (oracle) simüle eder. Seçilen belirsiz örneklere
+    doğru etiketleri ("gold label") atar.
+    """
+    def label_samples(self, samples: Dataset) -> Dataset:
+        """
+        Örnekleri doğru etiketlerle etiketler.
+        """
+        print(f"  -> {len(samples)} örnek 'uzman' tarafından etiketleniyor (simülasyon)...")
+        for sample in samples:
+            sample['gold_label'] = "ORACLE_LABEL" # Gerçekte bu etiket bir uzmandan gelirdi.
+        return samples
+
+# --- Ana Aktif Öğrenme Çerçevesi ---
+
 class ActiveLearningFramework:
     """
-    Belirsizlik tabanlı aktif öğrenme sistemi
+    Belirsizlik tabanlı aktif öğrenme sistemi. Modeli, en bilgilendirici
+    örnekleri etiketleyerek iteratif olarak iyileştirir.
     """
-    def __init__(self, base_model: HybridEnsembleModel):
+    def __init__(self, base_model: HybridEnsembleModel, max_iterations: int = 10, convergence_threshold: float = 0.001):
+        """
+        Framework'ü temel model ve parametrelerle başlatır.
+        """
+        print("Aktif Öğrenme Çerçevesi başlatıldı.")
         self.base_model = base_model
         self.uncertainty_sampler = UncertaintySampler()
         self.oracle_simulator = OracleSimulator()
-    
+        self.max_iterations = max_iterations
+        self.convergence_threshold = convergence_threshold
+        self.performance_history = [0.0]
+
+    def _evaluate_model(self) -> Dict[str, float]:
+        """
+        Model performansını değerlendirir (simülasyon).
+        Her çağrıldığında performansın hafifçe arttığını varsayar.
+        """
+        last_accuracy = self.performance_history[-1]
+        improvement = np.random.rand() * 0.01  # 0 ile 0.01 arasında rastgele bir iyileşme
+        new_accuracy = min(last_accuracy + improvement, 0.99) # Maksimum %99 doğruluk
+        actual_improvement = new_accuracy - last_accuracy
+        self.performance_history.append(new_accuracy)
+        return {'accuracy': new_accuracy, 'improvement': actual_improvement}
+
     def iterative_improvement(self, unlabeled_data: Dataset) -> None:
-        """Iteratif model iyileştirme"""
+        """
+        Modeli, etiketlenmemiş veriyi kullanarak iteratif olarak iyileştirir.
+        """
+        print("\n--- Aktif Öğrenme Döngüsü Başlatılıyor ---")
+        
+        current_unlabeled_data = unlabeled_data.copy()
+
         for iteration in range(self.max_iterations):
-            # En belirsiz örnekleri seç
+            print(f"\nİterasyon: {iteration + 1}/{self.max_iterations}")
+            
+            if not current_unlabeled_data:
+                print("Etiketlenecek veri kalmadı. Döngü sonlandırılıyor.")
+                break
+
+            # 1. En belirsiz örnekleri seç
+            sample_size = min(100, len(current_unlabeled_data))
             uncertain_samples = self.uncertainty_sampler.select_samples(
-                unlabeled_data, 
+                current_unlabeled_data, 
                 self.base_model,
-                sample_size=100
+                sample_size=sample_size
             )
             
-            # Oracle'dan etiketler al (simülasyon)
+            # 2. Oracle'dan etiketler al (simülasyon)
             labeled_samples = self.oracle_simulator.label_samples(uncertain_samples)
             
-            # Modeli yeniden eğit
+            # 3. Modeli yeni etiketlenmiş verilerle yeniden eğit
             self.base_model.incremental_train(labeled_samples)
             
-            # Performans değerlendirmesi
-            performance = self.evaluate_model()
+            # 4. Performans değerlendirmesi
+            performance = self._evaluate_model()
+            print(f"  -> Yeni doğruluk: {performance['accuracy']:.4f}, İyileşme: {performance['improvement']:.4f}")
             
-            if performance.improvement < self.convergence_threshold:
+            # 5. Yakınsama kontrolü: İyileşme, belirlenen eşikten düşükse dur.
+            if performance['improvement'] < self.convergence_threshold and iteration > 0:
+                print("Model performansı yakınsadı. İterasyonlar durduruluyor.")
                 break
+                
+            # Simülasyon için önemli adım: Etiketlenen verileri havuzdan çıkar
+            labeled_ids = {s['id'] for s in uncertain_samples}
+            current_unlabeled_data = [d for d in current_unlabeled_data if d['id'] not in labeled_ids]
+
+        print("\n--- Aktif Öğrenme Döngüsü Tamamlandı ---\n")
+        print(f"Final Model Accuracy: {self.performance_history[-1]:.4f}")
+
+
+if __name__ == "__main__":
+    # --- Örnek Kullanım ---
     
-    def uncertainty_sampling_strategy(self, predictions: List[Prediction]) -> List[int]:
-        """Belirsizlik tabanlı örnekleme stratejisi"""
-        uncertainty_scores = []
-        
-        for pred in predictions:
-            # Entropy tabanlı belirsizlik
-            entropy = self.calculate_entropy(pred.probability_distribution)
-            
-            # Model uyuşmazlığı (ensemble disagreement)
-            disagreement = self.calculate_ensemble_disagreement(pred.individual_predictions)
-            
-            # Bağlamsal belirsizlik
-            contextual_uncertainty = self.calculate_contextual_uncertainty(pred.context)
-            
-            # Kombinasyon belirsizlik skoru
-            total_uncertainty = (
-                0.4 * entropy + 
-                0.4 * disagreement + 
-                0.2 * contextual_uncertainty
-            )
-            
-            uncertainty_scores.append(total_uncertainty)
-        
-        # En yüksek belirsizlik skorlu örnekleri döndür
-        return sorted(range(len(uncertainty_scores)), 
-                     key=lambda i: uncertainty_scores[i], 
-                     reverse=True)
+    # 1. Temel hibrit modeli başlat
+    hybrid_model = HybridEnsembleModel()
+    
+    # 2. Etiketlenmemiş büyük bir veri seti oluştur (simülasyon)
+    mock_unlabeled_data = [
+        {'id': i, 'text': f'Bu {i}. örnek cümledir.', 'context': ['Bu', f'{i}.', 'örnek', 'cümledir.']} 
+        for i in range(1000)
+    ]
+    
+    # 3. Aktif öğrenme çerçevesini başlat ve çalıştır
+    active_learner = ActiveLearningFramework(base_model=hybrid_model, max_iterations=5)
+    active_learner.iterative_improvement(unlabeled_data=mock_unlabeled_data)
+```
+
+### Kurulum ve Deployment
+
+Bu bölüm, sistemin yerel bir makinede kurulumu, test edilmesi ve bir sunucu ortamında canlıya alınması için gerekli adımları içerir.
+
+#### Yerel Geliştirme Ortamı Kurulumu
+
+1.  **Gereksinimler:**
+    * Python (3.8+)
+    * Git
+    * Docker (Opsiyonel, containerization için)
+
+2.  **Repository'yi Klonlama:**
+    ```bash
+    git clone https://github.com/siracgezgin/turkce-pos-tagger.git
+    cd turkce-pos-tagger
+    ```
+
+3.  **Sanal Ortam ve Bağımlılıklar:**
+    Geliştirme bağımlılıklarının sistem genelindeki paketlerden izole edilmesi için bir sanal ortam kullanılması şiddetle tavsiye edilir.
+    ```bash
+    # Sanal ortamı oluştur
+    python -m venv venv
+
+    # Sanal ortamı aktifleştir
+    # Windows
+    .\venv\Scripts\activate
+    # macOS / Linux
+    source venv/bin/activate
+
+    # Geliştirme için gerekli tüm bağımlılıkları yükle
+    pip install -r requirements/dev.txt
+    ```
+
+4.  **Testleri Çalıştırma:**
+    Kurulumun başarılı olduğunu doğrulamak ve sistemin bütünlüğünü kontrol etmek için testleri çalıştırın:
+    ```bash
+    pytest tests/
+    ```
+
+#### Docker ile Deployment
+
+Proje, Docker kullanılarak kolayca container haline getirilebilir ve herhangi bir ortamda tutarlı bir şekilde çalıştırılabilir.
+
+1.  **Development Image Oluşturma:**
+    ```bash
+    docker-compose build dev
+    ```
+
+2.  **Production Image Oluşturma ve Çalıştırma:**
+    ```bash
+    # Production image'ını build et
+    docker build -t turkce-pos-tagger:latest -f docker/Dockerfile.prod .
+
+    # Container'ı çalıştır
+    docker run -d -p 8000:8000 turkce-pos-tagger:latest
+    ```
+    API artık `http://localhost:8000` adresinde erişilebilir olacaktır.
+
+---
+
+### Performans Analizi ve Karşılaştırmalar
+
+Sistemimizin performansı, standartlaştırılmış test veri setleri üzerinde hem doğruluk hem de verimlilik metrikleri kullanılarak değerlendirilmiştir.
+
+#### Karşılaştırmalı Benchmark Sonuçları
+
+Hibrit modelimiz, saf istatistiksel modellere göre belirgin bir doğruluk artışı sağlarken, büyük Transformer tabanlı modellere kıyasla önemli ölçüde daha iyi hız ve bellek verimliliği sunar. Bu, doğruluk ve kaynak kullanımı arasında optimal bir denge noktası oluşturur.
+
+| Model/Sistem | Yıl | Yaklaşım | Doğruluk | F1-Skoru | Hız (token/sn) | Bellek Kullanımı |
+| :--- | :---: | :--- | :---: | :---: | :---: | :---: |
+| HMM Tagger | 2000 | İstatistiksel | 89.1% | 0.884 | 8,000 | 100MB |
+| **Our Hybrid System** | **2025** | **Çok Katmanlı Hibrit** | **96.7%** | **0.965** | **2,500** | **300MB** |
+| BERT-Turkish | 2020 | Transformer | **97.8%** | **0.976** | 200 | 1.2GB |
+
+[cite_start]*Tablo 2: Raporumuzdaki temel benchmark sonuçları özeti. [cite: 91]*
+
+#### Detaylı Hata Analizi
+
+Modelin hata yaptığı noktalar incelendiğinde, hataların büyük bir kısmının Türkçe'nin yapısal zorluklarından kaynaklandığı görülmüştür.
+
+| Hata Kategorisi | Toplam Hatalardaki Oranı | Açıklama |
+| :--- | :---: | :--- |
+| **Sözcüksel Belirsizlik** | %23.5 | [cite_start]"yüz", "at", "dolu" gibi birden fazla POS etiketine sahip kelimeler. [cite: 183] |
+| **Nadir Görülen Morfemler** | %18.7 | [cite_start]Eğitim setinde az sayıda bulunan veya hiç bulunmayan ek kombinasyonları. [cite: 183] |
+| **Bağlamsal Belirsizlik** | %15.2 | [cite_start]Özellikle sıfat-fiil ve isim-fiil yapılarının ayırt edilmesindeki zorluklar. [cite: 183] |
+| **Yabancı Kökenli Kelimeler** | %12.8 | [cite_start]Türkçe morfolojisine uymayan alıntı kelimeler (`X` etiketi). [cite: 183] |
+
+---
+
+### API Referansı ve Kullanım Örnekleri
+
+Sistem, RESTful API aracılığıyla bir servis olarak sunulmaktadır.
+
+#### `POST /api/v1/tag`
+
+Metin etiketleme için ana endpoint.
+
+**İstek (Request) Body:**
+
+```json
+{
+  "text": "Mehmet okula gitti.",
+  "options": {
+    "show_confidence": true,
+    "use_postprocessing": true
+  }
+}
+```
+
+**Başarılı Yanıt (Success Response) (200 OK):**
+
+```json
+{
+  "status": "success",
+  "processing_time_ms": 12.5,
+  "tagged_sentence": [
+    {
+      "id": 1,
+      "token": "Mehmet",
+      "lemma": "mehmet",
+      "pos_tag": "PROPN",
+      "confidence": 0.998
+    },
+    {
+      "id": 2,
+      "token": "okula",
+      "lemma": "okul",
+      "pos_tag": "NOUN",
+      "confidence": 0.991
+    },
+    {
+      "id": 3,
+      "token": "gitti",
+      "lemma": "git",
+      "pos_tag": "VERB",
+      "confidence": 0.999
+    },
+    {
+      "id": 4,
+      "token": ".",
+      "lemma": ".",
+      "pos_tag": "PUNCT",
+      "confidence": 1.0
+    }
+  ]
+}
+```
+
+**Kullanım Örneği (`curl` ile):**
+
+```bash
+curl -X POST http://localhost:8000/api/v1/tag \
+-H "Content-Type: application/json" \
+-d '{
+  "text": "Bursa Teknik Üniversitesi, mühendislik alanında önemli bir merkezdir.",
+  "options": {"show_confidence": true}
+}'
+```
+
+---
+
+### Deneysel Sonuçlar ve Ablasyon Çalışmaları
+
+Sistemimizin başarısına katkıda bulunan bileşenlerin önemini analiz etmek için ablasyon çalışmaları (sistematik olarak bileşenleri çıkarma) yürütülmüştür.
+
+| Model Konfigürasyonu | Doğruluk (%) | F1-Skoru | Açıklama |
+| :--- | :---: | :---: | :--- |
+| **Tam Hibrit Model** | **96.7** | **0.965** | Tüm bileşenler aktif. |
+| - Morfolojik Özellikler | 94.8 | 0.941 | Morfolojik özellikler olmadan, sadece bağlamsal. |
+| - Bağlamsal Özellikler | 93.1 | 0.925 | Bağlamsal özellikler olmadan, sadece morfolojik. |
+| - Son İşleme Katmanı | 96.1 | 0.957 | Kural tabanlı düzeltmeler olmadan. |
+| - Belirsizlik Yönetimi | 96.3 | 0.960 | Düşük güvenilirlikli tahminler için alternatif üretmeden. |
+| Sadece CRF (Baseline) | 94.2 | 0.938 | Gelişmiş özellikler olmadan temel CRF. |
+
+*Tablo 3: Ablasyon çalışması sonuçları. Morfolojik ve bağlamsal özelliklerin model performansına kritik katkı sağladığı görülmektedir.*
+
+---
+
+### Katkıda Bulunma ve Geliştirme
+
+Bu proje açık kaynaklıdır ve topluluk katkılarına açıktır. Katkıda bulunmak için lütfen `CONTRIBUTING.md` dosyasını inceleyin.
+
+**Genel Geliştirme Akışı:**
+1.  Projeyi `fork`'layın ve klonlayın.
+2.  Yeni bir özellik veya hata düzeltmesi için bir `branch` oluşturun: `git checkout -b ozellik/yeni-ozellik-adi`
+3.  Kod standartlarına uymak için `black` ve `flake8` araçlarını çalıştırın.
+4.  Değişikliklerinizi testlerle doğrulayın.
+5.  Değişikliklerinizi `commit`'leyin ve `push`'layın.
+6.  `main` dalına bir **Pull Request (Çekme İsteği)** açın.
+
+---
+
+### Akademik Referanslar ve Atıflar
+
+Bu çalışmanın teorik altyapısı ve literatür analizi, aşağıdaki temel akademik makalelere dayanmaktadır:
+
+1.  Oflazer, K. (2003). "Dependency parsing with an extended finite-state approach". [cite_start]*Computational Linguistics, 29*(4), 515-544. [cite: 185]
+2.  Eryiğit, G., Nivre, J., & Oflazer, K. (2008). "Dependency parsing of Turkish". [cite_start]*Computational Linguistics, 34*(3), 357-389. [cite: 186]
+3.  Sak, H., Güngör, T., & Saraçlar, M. (2008). "Turkish language resources: morphological parser, morphological disambiguator and web corpus". [cite_start]*GoTAL 2008, 417-427*. [cite: 187]
+4.  Hakkani-Tür, D. Z., Oflazer, K., & Tür, G. (2002). "Statistical morphological disambiguation for agglutinative languages". [cite_start]*Computers and the Humanities, 36*(4), 381-410. [cite: 190]
+5.  Lafferty, J., McCallum, A., & Pereira, F. C. (2001). "Conditional random fields: Probabilistic models for segmenting and labeling sequence data". [cite_start]*Proceedings of the 18th International Conference on Machine Learning*, 282-289. [cite: 191]
+6.  Huang, Z., Xu, W., & Yu, K. (2015). "Bidirectional LSTM-CRF models for sequence tagging". [cite_start]*arXiv preprint arXiv:1508.01991*. [cite: 193]
+7.  Akın, A. A., & Akın, M. D. (2007). "Zemberek, an open source NLP framework for Turkic languages". [cite_start]*Structure, 10*, 1-5. [cite: 200]
+8.  Nivre, J., et al. (2016). "Universal dependencies v1: A multilingual treebank collection". [cite_start]*Proceedings of the Tenth International Conference on Language Resources and Evaluation*, 1659-1666. [cite: 201]
+9.  Yuret, D., & Türe, F. (2006). "Learning morphological disambiguation rules for Turkish". [cite_start]*Proceedings of HLT-NAACL*, 328-334. [cite: 205]
+
+Bu projeyi kendi çalışmanızda referans göstermek için lütfen `README.md` dosyasının üst kısmındaki BibTeX formatını kullanın.
+
+---
+
+### Lisans ve İletişim
+
+#### Lisans
+Bu proje **MIT Lisansı** altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız.
+
+#### İletişim
+**Proje Ekibi:**
+* [cite_start]Ali Erdem Baltacı - `21360859011` [cite: 1]
+* [cite_start]Musa Adıgüzel - `22360859328` [cite: 1]
+* [cite_start]Nazmi Cirim - `21360859069` [cite: 1]
+* [cite_start]Siraç Gezgin - `22360859058` [cite: 1]
+
+**Proje Danışmanı:**
+* Dr. Öğr. [cite_start]Üyesi Hayri Volkan AGUN [cite: 2]

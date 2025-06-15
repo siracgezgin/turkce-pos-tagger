@@ -113,7 +113,7 @@ Türkçe POS tagging alanında yapılan çalışmalar kronolojik olarak şu şek
 | **2015-2020** | Derin Öğrenme | Şeker & Eryiğit (2017), Kuru et al. (2020) | ~96% | Yüksek hesaplama maliyeti, veri açlığı |
 | **2020-2025** | Transformer | BERTurk, ConvBERT-TR | ~98% | Massive model boyutu, deployment zorluğu |
 
-### 🔬 Özgün Bilimsel Katkılarımız
+### Özgün Bilimsel Katkılarımız
 
 **1. Uyarlanabilir Morfolojik Segmentasyon Algoritması**
 

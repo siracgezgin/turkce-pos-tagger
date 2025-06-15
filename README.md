@@ -16,7 +16,7 @@
 
 ---
 
-[![Proje Sunumu](https://img.shields.io/badge/📽️_Proje_Sunumu-İzle-red?style=for-the-badge)](https://example.com/presentation)
+[![Proje Sunumu](https://img.shields.io/badge/📽️_Proje_Sunumu-İzle-red?style=for-the-badge)](https://www.youtube.com/watch?v=M2D6vytAbdg)
 [![Akademik Makale](https://img.shields.io/badge/📄_Akademik_Makale-Oku-blue?style=for-the-badge)](https://aclanthology.org/A94-1018.pdf)
 
 </div>

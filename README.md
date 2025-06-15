@@ -915,6 +915,8 @@ Bu çalışmanın teorik altyapısı ve literatür analizi, aşağıdaki temel a
 
 Bu projeyi kendi çalışmanızda referans göstermek için lütfen `README.md` dosyasının üst kısmındaki BibTeX formatını kullanın.
 
+--- 
+
 ### Lisans ve İletişim
 
 #### Lisans

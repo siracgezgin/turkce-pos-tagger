@@ -1,0 +1,12 @@
+# Ana kütüphaneler
+numpy
+scipy
+
+# Makine Öğrenmesi
+scikit-learn
+sklearn-crfsuite
+
+# İsteğe bağlı (notebook'lar için)
+jupyter
+pandas
+matplotlib
